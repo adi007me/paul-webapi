@@ -1,0 +1,35 @@
+﻿@html.extend('layout',function(model){
+	@html.block("body", function(model){
+        <h1>
+            Login
+        </h1>
+        <form action="/login" method="post">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2">
+                        Username:
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" name="username" id="username" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        Password:
+                    </div>
+                    <div class="col-md-2">
+                        <input type="password" name="password" id="password" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <input type="submit" value="Login" />
+                    </div>
+                    <div class="col-md-2">
+                        <input type="reset" value="Reset" />
+                    </div>
+                </div>
+            </div>
+        </form>
+	})
+})

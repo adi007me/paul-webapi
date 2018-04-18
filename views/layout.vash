@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Paul the Predictor</title>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" />
+        <!--<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/lib/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+
+        <script type="text/javascript" src="/lib/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/lib/underscore/underscore.js"></script>-->
+        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+        @html.block("head")
+        <link href="/stylesheets/main.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div>
+            <h1>
+                Paul the Predictor
+            </h1>
+        </div>
+
+        <div>
+            @html.block("body")
+        </div>
+    </body>
+</html>

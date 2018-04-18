@@ -1,0 +1,57 @@
+﻿@html.extend('layout',function(model){
+	@html.block("body", function(model){
+        <h1>
+            Admin
+        </h1>
+        <form action="/admin/lock" method="post">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2">
+                        Match Id
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" name="matchId" id="matchId" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <input type="submit" value="Lock Match" />
+                    </div>
+                    <div class="col-md-2">
+                        <input type="reset" value="Reset" />
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <hr />
+        <form action="/admin/result" method="post">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2">
+                        Match Id
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" name="matchIdResult" id="matchIdResult" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        Result
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" name="result" id="result" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <input type="submit" value="Result" />
+                    </div>
+                    <div class="col-md-2">
+                        <input type="reset" value="Reset" />
+                    </div>
+                </div>
+            </div>
+        </form>
+	})
+})
