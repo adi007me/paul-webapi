@@ -36,6 +36,9 @@
     <Compile Include="controllers\adminController.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="controllers\betInfoController.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="controllers\choicesController.js">
       <SubType>Code</SubType>
     </Compile>
