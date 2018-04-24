@@ -382,6 +382,64 @@
         });
     };
 
+    data.getMatchBets = function (matchId, next) {
+        database.getDb(function (err, db) {
+            if (err) {
+                next(err);
+            } else {
+                data.getLeagues(function (err, leagues) {
+                    if (err) {
+                        next(err);
+                    } else {
+                        let match = leagues[0].matches.filter(m => m.match_id === matchId);
+
+                        if (!match || match.length == 0) {
+                            next('Match not found');
+                            return;
+                        } else {
+                            db.users.find(
+                                {
+                                    $and: [{
+                                        userId: { $ne: 'paul-admin' }
+                                    }
+                                    , {
+                                        choices: { $elemMatch: { match_id: matchId, choice: match[0].team1_id } }
+                                    }]
+                                })
+                                .project({ "name": 1, "userId": 1, "_id": 0 }).toArray(
+                                    function (err, usersOnTeam1) {
+                                        if (err) {
+                                            next(err);
+                                        } else {
+                                            db.users.find(
+                                                {
+                                                    $and: [{
+                                                        userId: { $ne: 'paul-admin' }
+                                                    }
+                                                        , {
+                                                        choices: { $elemMatch: { match_id: matchId, choice: match[0].team2_id } }
+                                                    }]
+                                                })
+                                                .project( { "name": 1, "userId": 1, "_id": 0 } ).toArray(
+                                                    function (err, usersOnTeam2) {
+                                                        if (err) {
+                                                            next(err);
+                                                        } else {
+                                                            console.log({ team1: usersOnTeam1, team2: usersOnTeam2 });
+                                                            next(null, { team1: usersOnTeam1, team2: usersOnTeam2 });
+                                                        }
+                                                    }
+                                                );
+                                        }
+                                    }
+                                );
+                        }
+                    }
+                });
+            }
+        });
+    };
+
     const initialChoices = 
         [
             {
