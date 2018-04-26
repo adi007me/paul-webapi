@@ -397,16 +397,21 @@
                             next('Match not found');
                             return;
                         } else {
-                            db.users.find(
-                                {
-                                    $and: [{
-                                        userId: { $ne: 'paul-admin' }
-                                    }
-                                    , {
-                                        choices: { $elemMatch: { match_id: matchId, choice: match[0].team1_id } }
-                                    }]
-                                })
-                                .project({ "name": 1, "userId": 1, "_id": 0 }).toArray(
+                            match[0].datetime.setHours(match[0].datetime.getHours() - 2);
+                            
+                            if (match[0].datetime > new Date()) {
+                                next('NotLocked');
+                            } else {
+                                db.users.find(
+                                    {
+                                        $and: [{
+                                            userId: { $ne: 'paul-admin' }
+                                        }
+                                            , {
+                                            choices: { $elemMatch: { match_id: matchId, choice: match[0].team1_id } }
+                                        }]
+                                    })
+                                    .project({ "name": 1, "userId": 1, "_id": 0 }).toArray(
                                     function (err, usersOnTeam1) {
                                         if (err) {
                                             next(err);
@@ -420,19 +425,20 @@
                                                         choices: { $elemMatch: { match_id: matchId, choice: match[0].team2_id } }
                                                     }]
                                                 })
-                                                .project( { "name": 1, "userId": 1, "_id": 0 } ).toArray(
-                                                    function (err, usersOnTeam2) {
-                                                        if (err) {
-                                                            next(err);
-                                                        } else {
-                                                            console.log({ team1: usersOnTeam1, team2: usersOnTeam2 });
-                                                            next(null, { team1: usersOnTeam1, team2: usersOnTeam2 });
-                                                        }
+                                                .project({ "name": 1, "userId": 1, "_id": 0 }).toArray(
+                                                function (err, usersOnTeam2) {
+                                                    if (err) {
+                                                        next(err);
+                                                    } else {
+                                                        console.log({ team1: usersOnTeam1, team2: usersOnTeam2 });
+                                                        next(null, { team1: usersOnTeam1, team2: usersOnTeam2 });
                                                     }
+                                                }
                                                 );
                                         }
                                     }
-                                );
+                                    );
+                            }
                         }
                     }
                 });

@@ -10,7 +10,7 @@
             if (matchId) {
                 data.getMatchBets(matchId, function (err, matchBets) {
                     if (err) {
-                        if (err.indexOf('Match not found') > -1) {
+                        if (err.indexOf('Match not found') > -1 || err.indexOf('NotLocked') > -1) {
                             res.status(400).send({ status: 'Bad Request: ' + err });
                         } else {
                             res.status(500).send({ status: 'Internal Error: ' + err });
