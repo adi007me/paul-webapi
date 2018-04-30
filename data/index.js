@@ -1,6 +1,9 @@
 (function (data) {
 
     var database = require('./database');
+    var leaderBoardData = require('./leaderBoard.data');
+
+    leaderBoardData.init(data);
 
     data.addUser = function (user, next) {
         database.getDb(function (err, db) {
@@ -360,27 +363,6 @@
             }
         });
     }
-
-    data.getLeaderBoard = function (next) {
-        database.getDb(function (err, db) {
-            if (err) {
-                next(err);
-            } else {
-                db.users.aggregate(db.users.aggregate([
-                    { $match: { userId: { $ne: "paul-admin" } } },
-                    { $project: { "_id": 0, "name": 1, "userId": 1, "totalPoints": { $sum: "$choices.points" } } },
-                    { $sort: { totalPoints: -1, name: 1 } }
-                ]).toArray(function (err, leaderBoard) {
-                    if (err) {
-                        next(err);
-                    } else {
-                        next(null, leaderBoard);
-                    }
-                })
-                );
-            }
-        });
-    };
 
     data.getMatchBets = function (matchId, next) {
         database.getDb(function (err, db) {
