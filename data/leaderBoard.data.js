@@ -36,7 +36,7 @@
                                                 item.totalMatches = item.wins + item.losses;
                                             });
 
-                                            next(leaderBoard);
+                                            next(null, leaderBoard);
                                         }
                                     });
                                 }
