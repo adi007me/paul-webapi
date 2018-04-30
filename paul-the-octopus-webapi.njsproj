@@ -62,6 +62,9 @@
     </Compile>
     <Compile Include="data\database.js" />
     <Compile Include="data\index.js" />
+    <Compile Include="data\leaderBoard.data.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Content Include=".cfignore">
       <SubType>Code</SubType>
     </Content>
