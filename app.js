@@ -24,7 +24,7 @@ app.use(function setHeaders(req, res, next) {
     let vcap_services = JSON.parse(process.env.VCAP_SERVICES || '{}');
 
     if (vcap_services.mlab) {
-        res.setHeader('Access-Control-Allow-Origin', 'https://paul-predictor.cfapps.io');
+        res.setHeader('Access-Control-Allow-Origin', 'https://paul-the-predictor.cfapps.io');
     } else {
         res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
     }
