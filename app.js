@@ -22,9 +22,14 @@ app.set("view engine", "vash");
 
 app.use(function setHeaders(req, res, next) {
     let vcap_services = JSON.parse(process.env.VCAP_SERVICES || '{}');
-
+    
+    //TODO : Update Origin to allow only one host
     if (vcap_services.mlab) {
-        res.setHeader('Access-Control-Allow-Origin', 'https://paul-the-predictor.cfapps.io');
+        if (req.headers.origin) {
+            res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+        } else {
+            res.setHeader('Access-Control-Allow-Origin', 'https://paul-api.cfapps.io');
+        }
     } else {
         res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
     }
