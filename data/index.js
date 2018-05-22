@@ -309,15 +309,23 @@
                                     let matches = leagues[0].matches.filter(m => m.match_id === matchId);
 
                                     let match = matches[0];
-
+                                    let pointsForMatch = 0;
                                     let points = 0;
                                     let loosingTeam = '';
 
+                                    if (match.match_id.includes('match')) {
+                                        pointsForMatch = 10;
+                                    } else if (match.match_id.includes('sm')) {
+                                        pointsForMatch = 25;
+                                    } else if (match.match_id.includes('final')) {
+                                        pointsForMatch = 50;
+                                    }
+
                                     if (result == match.team1_id) {
-                                        points = match.favTeam2 / match.favTeam1 * 10;
+                                        points = match.favTeam2 / match.favTeam1 * pointsForMatch;
                                         loosingTeam = match.team2_id;
                                     } else {
-                                        points = match.favTeam1 / match.favTeam2 * 10;
+                                        points = match.favTeam1 / match.favTeam2 * pointsForMatch;
                                         loosingTeam = match.team1_id;
                                     }
 
@@ -345,7 +353,7 @@
                                                             }
                                                         }
                                                     },
-                                                    { $set: { "choices.$.points": -10 } }
+                                                    { $set: { "choices.$.points": (pointsForMatch*(-1)) } }
                                                     , function (err) {
                                                         if (err) {
                                                             console.log(err);
