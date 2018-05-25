@@ -92,9 +92,21 @@
                 },
                 {
                     "$match": {
-                        "choices.points": {
-                            $eq: -10
-                        }
+                        $or: [
+                            {
+                                "choices.points": {
+                                    $eq: -10
+                                }
+                            }, {
+                                "choices.points": {
+                                    $eq: -25
+                                }
+                            }, {
+                                "choices.points": {
+                                    $eq: -50
+                                }
+                            }
+                            ]
                     }
                 },
                 {
