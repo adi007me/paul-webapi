@@ -2,8 +2,12 @@
 
     var database = require('./database');
     var leaderBoardData = require('./leaderBoard.data');
+    var leaguesData = require('./leagues.data');
+    var betInfoData = require('./betInfo.data');
 
     leaderBoardData.init(data);
+    leaguesData.init(data);
+    betInfoData.init(data);
 
     data.addUser = function (user, next) {
         database.getDb(function (err, db) {
@@ -23,23 +27,6 @@
             }
         });
     };
-
-    data.getLeagues = function (next) {
-        database.getDb(function (err, db) {
-            if (err) {
-                next(err);
-            } else {
-                console.log('Leagues');
-                db.leagues.find().toArray(function (err, leagues) {
-                    if (err) {
-                        next(err, null);
-                    } else {
-                        next(null, leagues);
-                    }
-                });
-            }
-        })
-    }
 
     data.getUser = function (userName, next) {
         database.getDb(function (err, db) {
@@ -250,27 +237,33 @@
                                 db.users.count(
                                     { choices: { $elemMatch: { match_id: matchId, choice: match[0].team1_id } } }
                                     , function (err, choice1Count) {
-                                        let favTeam1 = choice1Count - 1;
-                                        let favTeam2 = userCount - favTeam1 - 1;
 
-                                        db.leagues.updateOne(
-                                            {
-                                                "matches.match_id": matchId
-                                            },
-                                            {
-                                                $set: {
-                                                    "matches.$.favTeam1": favTeam1,
-                                                    "matches.$.favTeam2": favTeam2
-                                                }
-                                            }
-                                            , function (err, res) {
-                                                if (err) {
-                                                    console.log('Error locking match: ' + matchId);
-                                                    next(err);
-                                                } else {
-                                                    console.log('Locked Match ' + matchId);
-                                                    next('Done');
-                                                }
+                                        db.users.count({ choices: { $elemMatch: { match_id: matchId, choice: { $in: ['draw', '', null] } } } }
+                                            , function (err, drawCount) {
+                                                let favTeam1 = choice1Count;
+                                                let favDraw = drawCount;
+                                                let favTeam2 = userCount - favTeam1 - favDraw - 1;
+
+                                                db.leagues.updateOne(
+                                                    {
+                                                        "matches.match_id": matchId
+                                                    },
+                                                    {
+                                                        $set: {
+                                                            "matches.$.favTeam1": favTeam1,
+                                                            "matches.$.favTeam2": favTeam2,
+                                                            "matches.$.favDraw": favDraw
+                                                        }
+                                                    }
+                                                    , function (err, res) {
+                                                        if (err) {
+                                                            console.log('Error locking match: ' + matchId);
+                                                            next(err);
+                                                        } else {
+                                                            console.log('Locked Match ' + matchId);
+                                                            next('Done');
+                                                        }
+                                                    });
                                             });
                                     });
                             }
@@ -311,7 +304,7 @@
                                     let match = matches[0];
                                     let pointsForMatch = 0;
                                     let points = 0;
-                                    let loosingTeam = '';
+                                    let favDraw = match.favDraw | 0;
 
                                     if (match.match_id.includes('match')) {
                                         pointsForMatch = 10;
@@ -322,11 +315,11 @@
                                     }
 
                                     if (result == match.team1_id) {
-                                        points = match.favTeam2 / match.favTeam1 * pointsForMatch;
-                                        loosingTeam = match.team2_id;
-                                    } else {
-                                        points = match.favTeam1 / match.favTeam2 * pointsForMatch;
-                                        loosingTeam = match.team1_id;
+                                        points = (match.favTeam2 + match.favDraw) / match.favTeam1 * pointsForMatch;
+                                    } else if (result == match.team2_id) {
+                                        points = (match.favTeam1 + match.favDraw) / match.favTeam2 * pointsForMatch;
+                                    } else if (result == 'draw') {
+                                        points = (match.favTeam1 + match.favTeam2) / match.favDraw * pointsForMatch;
                                     }
 
                                     db.users.updateMany(
@@ -349,7 +342,7 @@
                                                         "choices": {
                                                             "$elemMatch": {
                                                                 "match_id": matchId,
-                                                                "choice": loosingTeam
+                                                                "choice": { $ne: result }
                                                             }
                                                         }
                                                     },
@@ -372,355 +365,246 @@
         });
     }
 
-    data.getMatchBets = function (matchId, next) {
-        database.getDb(function (err, db) {
-            if (err) {
-                next(err);
-            } else {
-                data.getLeagues(function (err, leagues) {
-                    if (err) {
-                        next(err);
-                    } else {
-                        let match = leagues[0].matches.filter(m => m.match_id === matchId);
-
-                        if (!match || match.length == 0) {
-                            next('Match not found');
-                            return;
-                        } else {
-                            match[0].datetime.setHours(match[0].datetime.getHours() - 2);
-                            
-                            if (match[0].datetime > new Date()) {
-                                next('NotLocked');
-                            } else {
-                                db.users.find(
-                                    {
-                                        $and: [{
-                                            userId: { $ne: 'paul-admin' }
-                                        }
-                                            , {
-                                            choices: { $elemMatch: { match_id: matchId, choice: match[0].team1_id } }
-                                        }]
-                                    })
-                                    .project({ "name": 1, "userId": 1, "_id": 0 }).toArray(
-                                    function (err, usersOnTeam1) {
-                                        if (err) {
-                                            next(err);
-                                        } else {
-                                            db.users.find(
-                                                {
-                                                    $and: [{
-                                                        userId: { $ne: 'paul-admin' }
-                                                    }
-                                                        , {
-                                                        choices: { $elemMatch: { match_id: matchId, choice: match[0].team2_id } }
-                                                    }]
-                                                })
-                                                .project({ "name": 1, "userId": 1, "_id": 0 }).toArray(
-                                                function (err, usersOnTeam2) {
-                                                    if (err) {
-                                                        next(err);
-                                                    } else {
-                                                        console.log({ team1: usersOnTeam1, team2: usersOnTeam2 });
-                                                        next(null, { team1: usersOnTeam1, team2: usersOnTeam2 });
-                                                    }
-                                                }
-                                                );
-                                        }
-                                    }
-                                    );
-                            }
-                        }
-                    }
-                });
-            }
-        });
-    };
-
     const initialChoices = 
         [
             {
-                "match_id": "match1",
-                "choice": "MI",
+                "match_id": "fifa.match1",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match2",
-                "choice": "DD",
+                "match_id": "fifa.match2",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match3",
-                "choice": "KKR",
+                "match_id": "fifa.match3",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match4",
-                "choice": "SRH",
+                "match_id": "fifa.match4",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match5",
-                "choice": "CSK",
+                "match_id": "fifa.match5",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match6",
-                "choice": "RR",
+                "match_id": "fifa.match6",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match7",
-                "choice": "SRH",
+                "match_id": "fifa.match7",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match8",
-                "choice": "RCB",
+                "match_id": "fifa.match8",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match9",
-                "choice": "MI",
+                "match_id": "fifa.match9",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match10",
-                "choice": "KKR",
+                "match_id": "fifa.match10",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match11",
-                "choice": "RCB",
+                "match_id": "fifa.match11",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match12",
-                "choice": "KXIP",
+                "match_id": "fifa.match12",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match13",
-                "choice": "KKR",
+                "match_id": "fifa.match13",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match14",
-                "choice": "MI",
+                "match_id": "fifa.match14",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match15",
-                "choice": "RR",
+                "match_id": "fifa.match15",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match16",
-                "choice": "KXIP",
+                "match_id": "fifa.match16",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match17",
-                "choice": "CSK",
+                "match_id": "fifa.match17",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match18",
-                "choice": "KKR",
+                "match_id": "fifa.match18",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match19",
-                "choice": "DD",
+                "match_id": "fifa.match19",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match20",
-                "choice": "SRH",
+                "match_id": "fifa.match20",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match21",
-                "choice": "RR",
+                "match_id": "fifa.match21",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match22",
-                "choice": "RR",
+                "match_id": "fifa.match22",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match23",
-                "choice": "KXIP",
+                "match_id": "fifa.match23",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match24",
-                "choice": "MI",
+                "match_id": "fifa.match24",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match25",
-                "choice": "RCB",
+                "match_id": "fifa.match25",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match26",
-                "choice": "SRH",
+                "match_id": "fifa.match26",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match27",
-                "choice": "DD",
+                "match_id": "fifa.match27",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match28",
-                "choice": "CSK",
+                "match_id": "fifa.match28",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match29",
-                "choice": "RR",
+                "match_id": "fifa.match29",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match30",
-                "choice": "RCB",
+                "match_id": "fifa.match30",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match31",
-                "choice": "CSK",
+                "match_id": "fifa.match31",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match32",
-                "choice": "RCB",
+                "match_id": "fifa.match32",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match33",
-                "choice": "DD",
+                "match_id": "fifa.match33",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match34",
-                "choice": "KKR",
+                "match_id": "fifa.match34",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match35",
-                "choice": "KXIP",
+                "match_id": "fifa.match35",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match36",
-                "choice": "CSK",
+                "match_id": "fifa.match36",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match37",
-                "choice": "SRH",
+                "match_id": "fifa.match37",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match38",
-                "choice": "MI",
+                "match_id": "fifa.match38",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match39",
-                "choice": "KXIP",
+                "match_id": "fifa.match39",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match40",
-                "choice": "SRH",
+                "match_id": "fifa.match40",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match41",
-                "choice": "RR",
+                "match_id": "fifa.match41",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match42",
-                "choice": "KKR",
+                "match_id": "fifa.match42",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match43",
-                "choice": "DD",
+                "match_id": "fifa.match43",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match44",
-                "choice": "RR",
+                "match_id": "fifa.match44",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match45",
-                "choice": "KXIP",
+                "match_id": "fifa.match45",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match46",
-                "choice": "RCB",
+                "match_id": "fifa.match46",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match47",
-                "choice": "CSK",
+                "match_id": "fifa.match47",
+                "choice": "draw",
                 "points": 0
             },
             {
-                "match_id": "match48",
-                "choice": "MI",
-                "points": 0
-            },
-            {
-                "match_id": "match49",
-                "choice": "KXIP",
-                "points": 0
-            },
-            {
-                "match_id": "match50",
-                "choice": "KKR",
-                "points": 0
-            },
-            {
-                "match_id": "match51",
-                "choice": "MI",
-                "points": 0
-            },
-            {
-                "match_id": "match52",
-                "choice": "RCB",
-                "points": 0
-            },
-            {
-                "match_id": "match53",
-                "choice": "DD",
-                "points": 0
-            },
-            {
-                "match_id": "match54",
-                "choice": "RR",
-                "points": 0
-            },
-            {
-                "match_id": "match55",
-                "choice": "SRH",
-                "points": 0
-            },
-            {
-                "match_id": "match56",
-                "choice": "DD",
-                "points": 0
-            },
-            {
-                "match_id": "match57",
-                "choice": "CSK",
+                "match_id": "fifa.match48",
+                "choice": "draw",
                 "points": 0
             }
         ];
