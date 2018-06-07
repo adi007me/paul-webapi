@@ -60,11 +60,15 @@
     <Compile Include="controllers\userController.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="data\betInfo.data.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="data\database.js" />
     <Compile Include="data\index.js" />
     <Compile Include="data\leaderBoard.data.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="data\leagues.data.js" />
     <Content Include=".cfignore">
       <SubType>Code</SubType>
     </Content>
