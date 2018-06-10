@@ -54,8 +54,8 @@
                         } else {                                            
                             let match = leagues[0].matches.filter(m => m.match_id === choice.match_id);
                             if (match && match.length > 0) {
-                                match[0].datetime.setHours(match[0].datetime.getHours() - 2);
-                                console.log(match[0].datetime < new Date());
+                                //match[0].datetime.setHours(match[0].datetime.getHours() - 2);
+                                //console.log(match[0].datetime < new Date());
 
                                 if (match[0].datetime > new Date()) {
 
