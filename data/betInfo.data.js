@@ -14,7 +14,7 @@
                         next('Match not found');
                         return;
                     } else {
-                        //match[0].datetime.setHours(match[0].datetime.getHours() - 2);
+                        match[0].datetime.setHours(match[0].datetime.getHours() - 1);
 
                         if (match[0].datetime > new Date()) {
                             next('NotLocked');
