@@ -5,9 +5,12 @@
     var leaguesData = require('./leagues.data');
     var betInfoData = require('./betInfo.data');
 
+    const registrationData = require('./registration.data');
+
     leaderBoardData.init(data);
     leaguesData.init(data);
     betInfoData.init(data);
+    registrationData.init(data);
 
     data.addUser = function (user, next) {
         database.getDb(function (err, db) {

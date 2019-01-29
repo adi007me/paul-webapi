@@ -8,6 +8,8 @@
     var session = require('express-session');
     const MongoStore = require('connect-mongo')(session);
 
+    var registration = require('../modules/registration.module');
+
     function userVerify(username, password, next) {
         data.getUser(username, function (err, user) {
             if (!err && user) {
@@ -130,37 +132,7 @@
             authFunction(req, res, next);
         });
 
-        app.get("/register", function (req, res) {
-            res.render("register", {
-                title: "Register on The Board", message: req.flash("addUserError") });
-        });
-
-        app.post("/register", function (req, res) {
-            if (req.body.userId && req.body.name && req.body.password) {
-                var salt = hasher.createSalt();
-
-                var user = {
-                    name: req.body.name,
-                    userId: req.body.userId,
-                    passwordHash: hasher.computeHash(req.body.password, salt),
-                    salt: salt,
-                    profilePic: '',
-                    leagues: [],
-                    choices: []
-                };
-
-                data.addUser(user, function (err) {
-                    if (err) {
-                        res.status(500).send({ error : 'unable to create new user : ' + err });
-                    } else {
-                        res.status(201).send({ status: 'User Created' });
-                    }
-                });
-            } else {
-                res.status(400).send({ status: 'Bad Request' });
-            }
-
-        });
+        
 
         app.get('/logout', function (req, res) {
             req.logout();
