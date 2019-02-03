@@ -5,9 +5,12 @@
     var leaguesData = require('./leagues.data');
     var betInfoData = require('./betInfo.data');
 
+    const registrationData = require('./registration.data');
+
     leaderBoardData.init(data);
     leaguesData.init(data);
     betInfoData.init(data);
+    registrationData.init(data);
 
     data.addUser = function (user, next) {
         database.getDb(function (err, db) {
@@ -54,7 +57,7 @@
                         } else {                                            
                             let match = leagues[0].matches.filter(m => m.match_id === choice.match_id);
                             if (match && match.length > 0) {
-                                //match[0].datetime.setHours(match[0].datetime.getHours() - 2);
+                                match[0].datetime.setHours(match[0].datetime.getHours() - 1);
                                 //console.log(match[0].datetime < new Date());
 
                                 if (match[0].datetime > new Date()) {

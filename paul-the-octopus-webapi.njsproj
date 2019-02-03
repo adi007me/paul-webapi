@@ -54,6 +54,9 @@
     <Compile Include="controllers\leagueController.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="controllers\registrationController.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="controllers\teamsController.js">
       <SubType>Code</SubType>
     </Compile>
@@ -69,7 +72,19 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="data\leagues.data.js" />
+    <Compile Include="data\registration.data.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="modules\email.module\index.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="modules\registration.module\index.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Content Include=".cfignore">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="modules\registration.module\registration-template.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="package.json" />
@@ -87,11 +102,17 @@
     <Content Include="views\layout.vash">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="views\registrationConfirmation.vash">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="controllers\" />
     <Folder Include="auth\" />
     <Folder Include="data\" />
+    <Folder Include="modules\" />
+    <Folder Include="modules\email.module\" />
+    <Folder Include="modules\registration.module\" />
     <Folder Include="public\" />
     <Folder Include="public\images\" />
     <Folder Include="public\javascripts\" />
