@@ -8,6 +8,7 @@
         var leaguesController = require('./leagueController');
         var teamsController = require('./teamsController');
         var userController = require('./userController');
+        const registrationController = require('./registrationController');
         
                 
         adminController.init(app);
@@ -18,5 +19,6 @@
         leaguesController.init(app);
         teamsController.init(app);
         userController.init(app);
+        registrationController.init(app);
     }
 })(module.exports);
