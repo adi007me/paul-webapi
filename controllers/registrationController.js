@@ -41,15 +41,17 @@
                     if (err) {
                         res.status(500).send({ error: 'unable to create new user : ' + err });
                     } else {
-                    registrationModule.sendConfirmationEmail(user.emailId, (err, response) => {
-                            if (err) {
-                                res.status(500).send('Error sending confimration email');
-                            } else {
-                                registrationModule.setUuid(user.userId, response.uuid, () => {
-                                    res.status(201).send({ status: 'User Created. Email Confirmation Pending' });
-                                });
-                            }
-                        });
+                        res.status(201).send({ status: 'User Created.' });
+                    // registrationModule.sendConfirmationEmail(user.emailId, (err, response) => {
+                    //         if (err) {
+                    //             res.status(500).send('Error sending confimration email');
+                    //         } else {
+                    //             registrationModule.setUuid(user.userId, response.uuid, () => {
+                    //                 res.status(201).send({ status: 'User Created. Email Confirmation Pending' });
+                    //             });
+                    //         }
+                    //     });
+                    // }
                     }
                 });
             } else {
