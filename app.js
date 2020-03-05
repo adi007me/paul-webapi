@@ -33,7 +33,8 @@ app.use(function setHeaders(req, res, next) {
             res.setHeader('Access-Control-Allow-Origin', 'https://paul-api.cfapps.io');
         }
     } else {
-        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+        // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+        res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
     }
     //https://paul-predictor.cfapps.io
     //res.setHeader('Access-Control-Allow-Origin', 'https://paul-predictor.cfapps.io');

@@ -3,8 +3,7 @@
     const cryptoModule = require('../modules/crypto-module');
     
     authenticationController.init = app => {
-        console.log('authenticationController.init')
-        app.get('/authenticate', (req, res) => {
+        app.get('/auth/loggedin', (req, res) => {
             const token = req.query.token;
             console.log('Current User:', req.currentUser);
 
@@ -29,6 +28,16 @@
             }, error => {
                 res.status(500).send('Authentication Failed');
             });
+        });
+
+        app.get('/auth/logout', (req, res) => {
+            var expirationDate = new Date();
+
+            expirationDate.setDate(expirationDate.getDate() - 2);
+
+            res.cookie('paul-auth', 'logout', {expires: expirationDate});
+
+            res.status(200).send('OK');
         });
     };
 
