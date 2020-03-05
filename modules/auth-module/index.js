@@ -19,7 +19,7 @@
                 const response = {
                     email: payload['email'],
                     name: payload['name'],
-                    userid: payload['sub'],
+                    userId: payload['sub'],
                     pictureUrl: payload['picture']
                 };
 

@@ -16,7 +16,7 @@
         database.getDb(function (err, db) {
             if (err) {
                 next(err);
-            } else {
+            } else {                
                 db.users.findOne({ userId: user.userId }, function (err, result) {
                     if (err) {
                         next(err);

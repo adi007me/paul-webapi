@@ -1,6 +1,7 @@
 (authenticationController => {
     const authModule = require('../modules/auth-module');
     const cryptoModule = require('../modules/crypto-module');
+    const userModule = require('../modules/user-module');
     
     authenticationController.init = app => {
         app.get('/auth/loggedin', (req, res) => {
@@ -8,21 +9,27 @@
             
             authModule.authenticate(token).then((user) => {
                 if (req.currentUser) {
-                    if (req.currentUser.userid === user.userid) {
+                    if (req.currentUser.userId === user.userId) {
                         res.status(200).send(user);
                     } else {
                         res.status(401).send('Unauthorized');
                     }
                 } else {
-                    const encryptedUser = cryptoModule.encrypt(JSON.stringify(user));
+                    userModule.createOrGetUser(user, (err, dbUser) => {
+                        if (err) {
+                            res.status(500).send(err);
+                        } else {                            
+                            const encryptedUser = cryptoModule.encrypt(JSON.stringify(user));
 
-                    var expirationDate = new Date();
+                            var expirationDate = new Date();
 
-                    expirationDate.setDate(expirationDate.getDate() + 1);
+                            expirationDate.setDate(expirationDate.getDate() + 1);
 
-                    res.cookie('paul-auth', encryptedUser, {expires: expirationDate});
+                            res.cookie('paul-auth', encryptedUser, {expires: expirationDate});
 
-                    res.status(200).send(user);
+                            res.status(200).send(user);
+                        }
+                    });                    
                 }
             }, error => {
                 res.status(500).send('Authentication Failed');
