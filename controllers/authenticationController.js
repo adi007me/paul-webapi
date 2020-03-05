@@ -5,14 +5,13 @@
     authenticationController.init = app => {
         app.get('/auth/loggedin', (req, res) => {
             const token = req.query.token;
-            console.log('Current User:', req.currentUser);
-
+            
             authModule.authenticate(token).then((user) => {
                 if (req.currentUser) {
                     if (req.currentUser.userid === user.userid) {
-                        res.status(401).send('Unauthorized');
-                    } else {
                         res.status(200).send(user);
+                    } else {
+                        res.status(401).send('Unauthorized');
                     }
                 } else {
                     const encryptedUser = cryptoModule.encrypt(JSON.stringify(user));
@@ -37,7 +36,7 @@
 
             res.cookie('paul-auth', 'logout', {expires: expirationDate});
 
-            res.status(200).send('OK');
+            res.status(200).send({'status': 'success'});
         });
     };
 

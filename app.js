@@ -61,10 +61,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 //app.use(cookieParser('entrepreneur'));
 //app.use(session({ cookie: { maxAge: 60000 } }));
 
+app.use(authModule.setCurrentUser);
+
 auth.init(app);
 controllers.init(app);
-
-app.use(authModule.setCurrentUser);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
