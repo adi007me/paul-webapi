@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 var debug = require('debug');
 var express = require('express');
 var path = require('path');
@@ -10,6 +10,8 @@ var bodyParser = require('body-parser');
 
 var controllers = require('./controllers');
 var auth = require('./auth');
+
+const authModule = require('./modules/auth-module');
 
 
 var router = express.Router();
@@ -31,7 +33,8 @@ app.use(function setHeaders(req, res, next) {
             res.setHeader('Access-Control-Allow-Origin', 'https://paul-api.cfapps.io');
         }
     } else {
-        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+        // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+        res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
     }
     //https://paul-predictor.cfapps.io
     //res.setHeader('Access-Control-Allow-Origin', 'https://paul-predictor.cfapps.io');
@@ -61,6 +64,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 auth.init(app);
 controllers.init(app);
 
+app.use(authModule.setCurrentUser);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

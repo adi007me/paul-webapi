@@ -1,4 +1,4 @@
-﻿(function (controllers) {
+(function (controllers) {
     controllers.init = function (app) {
         var adminController = require('./adminController');
         var betInfoController = require('./betInfoController');        
@@ -9,7 +9,7 @@
         var teamsController = require('./teamsController');
         var userController = require('./userController');
         const registrationController = require('./registrationController');
-        
+        const authenticationController = require('./authenticationController');        
                 
         adminController.init(app);
         betInfoController.init(app);
@@ -20,5 +20,6 @@
         teamsController.init(app);
         userController.init(app);
         registrationController.init(app);
+        authenticationController.init(app);
     }
 })(module.exports);
