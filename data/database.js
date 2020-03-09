@@ -6,7 +6,7 @@
     if (vcap_services.mlab) {
         mongoUrl = vcap_services.mlab[0].credentials.uri;        
     } else {
-        mongoUrl = 'mongodb+srv://paulpredictor:maJIws6vx49CZl8W@cluster0-oeiby.mongodb.net/test?retryWrites=true&w=majority';
+        mongoUrl = 'mongodb+srv://paulpredictor:LSUzj56IefzvzHa3@cluster0-oeiby.mongodb.net/test?retryWrites=true&w=majority';
     }
 
     const client = new MongoClient(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });

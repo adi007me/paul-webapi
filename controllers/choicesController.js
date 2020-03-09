@@ -1,11 +1,11 @@
-﻿(function (choicesController) {
+(function (choicesController) {
     'use strict';
 
-    var auth = require('../auth');
+    var authModule = require('../modules/auth-module');
     var data = require('../data');
 
     choicesController.init = function (app) {
-        app.get('/choices', auth.ensureAuthenticated, function (req, res) {
+        app.get('/choices', authModule.isLoggedIn, function (req, res) {
             if (req.user) {
                 res.status(200).send(req.user.choices);
             } else {
@@ -13,7 +13,7 @@
             }
         });
 
-        app.post('/choices', auth.ensureAuthenticated, function (req, res) {
+        app.post('/choices', authModule.isLoggedIn, function (req, res) {
             if (req.user) {
                 if (req.user.userId !== 'paul-admin') {
                     console.log(req.body.choice);

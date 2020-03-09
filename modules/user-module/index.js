@@ -3,6 +3,8 @@
 
     userModule.createOrGetUser = (user, next) => {
         db.getUser(user.email, (err, dbUser) => {
+            console.log(dbUser);
+
             if (err) {
                 console.log('user module err', err);
                 next(err);
@@ -12,7 +14,7 @@
             } else {
                 console.log('user module add user');
                 // add user
-                db.addUser({userId: user.email}, next);
+                db.addUser({ ...user, userId: user.email }, next);
             }
         })
     }

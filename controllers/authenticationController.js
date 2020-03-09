@@ -8,8 +8,8 @@
             const token = req.query.token;
             
             authModule.authenticate(token).then((user) => {
-                if (req.currentUser) {
-                    if (req.currentUser.userId === user.userId) {
+                if (req.user) {
+                    if (req.user.userId === user.userId) {
                         res.status(200).send(user);
                     } else {
                         res.status(401).send('Unauthorized');

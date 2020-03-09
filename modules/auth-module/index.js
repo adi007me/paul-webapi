@@ -40,6 +40,8 @@
     };
 
     authModule.isLoggedIn = (req, res, next) => {
+        console.log('isLoggedIn', req.cookies);
+
         if (req.cookies['paul-auth']) {
             next();
         } else {
@@ -51,7 +53,7 @@
         if (req.cookies['paul-auth']) {
             setCurrentUser(req);
 
-            if (req.currentUser.isAdmin) {
+            if (req.user.isAdmin) {
                 next();
             } else {
                 res.status(401).send('Unauthorized. Not an Admin to perform this operation');
@@ -67,8 +69,8 @@
             const currentUser = cryptoModule.decrypt(req.cookies['paul-auth']);
 
             if (currentUser) {
-                req.currentUser = JSON.parse(currentUser);
-                req.currentUser.isAdmin = Boolean(admins.indexOf(req.currentUser.email) > -1);
+                req.user = JSON.parse(currentUser);
+                req.user.isAdmin = Boolean(admins.indexOf(req.user.email) > -1);
             }
         }
     }

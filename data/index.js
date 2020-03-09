@@ -368,249 +368,285 @@
         });
     }
 
-    const initialChoices = 
-        [
-            {
-                "match_id": "fifa.match1",
+    function createInitialChoices(num) {
+        let initialChoices = [];
+
+        for (let i = 1; i <= num; i++) {
+            let choice = {
+                "match_id": "match" + i,
                 "choice": "draw",
                 "points": 0
-            },
-            {
-                "match_id": "fifa.match2",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match3",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match4",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match5",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match6",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match7",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match8",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match9",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match10",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match11",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match12",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match13",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match14",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match15",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match16",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match17",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match18",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match19",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match20",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match21",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match22",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match23",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match24",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match25",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match26",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match27",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match28",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match29",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match30",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match31",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match32",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match33",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match34",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match35",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match36",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match37",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match38",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match39",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match40",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match41",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match42",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match43",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match44",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match45",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match46",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match47",
-                "choice": "draw",
-                "points": 0
-            },
-            {
-                "match_id": "fifa.match48",
+            };
+
+            initialChoices.push(choice);
+        }
+
+        for (let i = 1; i <= 3; i++) {
+            let choice = {
+                "match_id": "sm" + i,
                 "choice": "draw",
                 "points": 0
             }
-        ];
+
+            initialChoices.push(choice);
+        }
+
+        initialChoices.push({
+            "match_id": "final",
+            "choice": "draw",
+            "points": 0
+        });
+
+        return initialChoices;
+    };
+
+    const initialChoices = createInitialChoices(56);
+
+    console.log(initialChoices);
+
+    // const initialChoices = 
+    //     [
+    //         {
+    //             "match_id": "match1",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match2",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match3",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match4",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match5",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match6",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match7",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match8",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match9",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match10",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match11",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match12",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match13",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match14",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match15",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match16",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match17",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match18",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match19",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match20",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match21",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match22",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match23",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match24",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match25",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match26",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match27",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match28",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match29",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match30",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match31",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match32",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match33",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match34",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match35",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match36",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match37",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match38",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match39",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match40",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match41",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match42",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match43",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match44",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match45",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match46",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match47",
+    //             "choice": "draw",
+    //             "points": 0
+    //         },
+    //         {
+    //             "match_id": "match48",
+    //             "choice": "draw",
+    //             "points": 0
+    //         }
+    //     ];
     
 
 }(module.exports));
