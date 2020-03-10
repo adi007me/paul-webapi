@@ -7,7 +7,11 @@
     choicesController.init = function (app) {
         app.get('/choices', authModule.isLoggedIn, function (req, res) {
             if (req.user) {
-                res.status(200).send(req.user.choices);
+                data.choices.getChoices(req.user.userId).then(choices => {
+                    res.status(200).send(choices);
+                }).catch(err => {
+                    res.status(500).send(err);
+                })
             } else {
                 res.status(401).send('Unauthorized');
             }

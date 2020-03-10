@@ -19,7 +19,7 @@
                 const response = {
                     email: payload['email'],
                     name: payload['name'],
-                    userId: payload['sub'],
+                    userId: payload['email'],
                     pictureUrl: payload['picture']
                 };
 
@@ -40,8 +40,6 @@
     };
 
     authModule.isLoggedIn = (req, res, next) => {
-        console.log('isLoggedIn', req.cookies);
-
         if (req.cookies['paul-auth']) {
             next();
         } else {

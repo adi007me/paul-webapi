@@ -18,7 +18,7 @@
                     userModule.createOrGetUser(user, (err, dbUser) => {
                         if (err) {
                             res.status(500).send(err);
-                        } else {                            
+                        } else {
                             const encryptedUser = cryptoModule.encrypt(JSON.stringify(user));
 
                             var expirationDate = new Date();
@@ -41,7 +41,7 @@
 
             expirationDate.setDate(expirationDate.getDate() - 2);
 
-            res.cookie('paul-auth', 'logout', {expires: expirationDate});
+            res.clearCookie('paul-auth');
 
             res.status(200).send({'status': 'success'});
         });
