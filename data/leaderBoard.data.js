@@ -1,4 +1,4 @@
-﻿(function (leaderBoardData) {
+(function (leaderBoardData) {
 
     var database = require('./database');
 
@@ -51,7 +51,7 @@
         function getPoints(db, next) {
             db.users.aggregate([
                 { $match: { userId: { $ne: "paul-admin" } } },
-                { $project: { "_id": 0, "name": 1, "userId": 1, "totalPoints": { $sum: "$choices.points" } } },
+                { $project: { "_id": 0, "name": 1, "userId": 1, "pictureUrl": 1, "totalPoints": { $sum: "$choices.points" } } },
                 { $sort: { totalPoints: -1, name: 1 } }
             ]).toArray(function (err, points) {
                 if (err) {
