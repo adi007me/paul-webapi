@@ -1,28 +1,98 @@
-﻿@html.extend('layout',function(model){
+@html.extend('layout',function(model){
 	@html.block("body", function(model){
         <h1>
             Admin
         </h1>
-        <form action="/admin/lock" method="post">
+        
+        
             <div class="container">
-                <div class="row">
-                    <div class="col-md-2">
-                        Match Id
-                    </div>
-                    <div class="col-md-2">
-                        <input type="text" name="matchId" id="matchId" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <input type="submit" value="Lock Match" />
-                    </div>
-                    <div class="col-md-2">
-                        <input type="reset" value="Reset" />
-                    </div>
-                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>
+                                Match Id
+                            </th>
+                            <th>
+                                Team 1 vs Team 2
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Result
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                        
+                    <tbody>
+                        @model.matches.forEach(function(match){
+                            <tr data-match-date="@match.datetime">
+                                <td>
+                                    @match.match_id
+                                </td>
+                                <td>
+                                    @match.team1_id
+                                    vs
+                                    @match.team2_id
+                                </td>
+                                <td>
+                                    @match.datetime.toLocaleString('en-US', { timeZone: 'UTC' }) GMT
+                                </td>
+                                <td>
+                                    <select class="result-dropdown" id="@('result-' + match.match_id)" data-result="@match.result">
+                                        <option value="Select">
+                                            Select
+                                        </option>
+
+                                        <option value="@match.team1_id">
+                                            @match.team1_id
+                                        </option>
+
+                                        <option value="@match.team2_id">
+                                            @match.team2_id
+                                        </option>
+
+                                        <option value="draw">
+                                            Draw
+                                        </option>
+                                    </select
+                                    <input type="text" id="@('result-' + match.match_id)" value="@match.result">
+                                </td>
+                                <td>
+                                    <button class="updateResult" data-match="@match.match_id">
+                                        Update Result
+                                    </button>
+                                </td>
+                            </tr>
+                        })
+                    </tbody>                
+                </table>
             </div>
-        </form>
+
+            <form action="/admin/lock" method="post">
+                <div class="container">                        
+                    <div class="row">
+                        <div class="col-md-2">
+                            Match Id
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" name="matchId" id="matchId" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <input type="submit" value="Lock Match" />
+                        </div>
+                        <div class="col-md-2">
+                            <input type="reset" value="Reset" />
+                        </div>
+                    </div>
+                </div>
+            </form>
 
         <hr />
         <form action="/admin/result" method="post">
