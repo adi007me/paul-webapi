@@ -247,7 +247,7 @@
                                             , function (err, drawCount) {
                                                 let favTeam1 = choice1Count;
                                                 let favDraw = drawCount;
-                                                let favTeam2 = userCount - favTeam1 - favDraw - 1;
+                                                let favTeam2 = userCount - favTeam1 - favDraw;
 
                                                 db.leagues.updateOne(
                                                     {
@@ -266,7 +266,7 @@
                                                             next(err);
                                                         } else {
                                                             console.log('Locked Match ' + matchId);
-                                                            next('Done');
+                                                            next(null, {favTeam1, favTeam2, favDraw});
                                                         }
                                                     });
                                             });
