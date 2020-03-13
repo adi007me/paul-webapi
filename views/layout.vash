@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html>
     <head>
@@ -12,6 +12,7 @@
         <script type="text/javascript" src="/lib/underscore/underscore.js"></script>-->
         <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
+        <script type="text/javascript" src="/scripts/site.js"></script>
         @html.block("head")
         <link href="/stylesheets/main.css" rel="stylesheet">
     </head>

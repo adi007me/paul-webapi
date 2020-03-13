@@ -1,19 +1,23 @@
-﻿(function(admin) {
+(function(admin) {
     'use strict';
 
-    var auth = require('../auth');
+    var authModule = require('../modules/auth-module');
     var data = require('../data');
 
     admin.init = function (app) {
-        app.get('/admin', auth.ensureAuthenticated, function (req, res) {
-            if (req.user && req.user.userId === 'paul-admin') {
-                res.render('admin');
-            } else {
-                res.status(401).send('Unauthorized');
-            }
+        app.get('/admin', authModule.isAdmin, function (req, res) {
+            data.getLeagues((err, leagues) => {
+                if (err) {
+                    res.status(500).send(err);
+                } else {
+                    const matches = leagues[0].matches;
+
+                    res.render('admin', { matches });
+                }
+            })
         });
 
-        app.post('/admin/lock', auth.ensureAuthenticated, function (req, res) {
+        app.post('/admin/lock', authModule.isAdmin, function (req, res) {
             if (req.user && req.user.userId === 'paul-admin') {
                 var matchId = req.body.matchId;
                 data.lockMatch(matchId, function () {
@@ -24,21 +28,12 @@
             }
         });
 
-        app.post('/admin/result', auth.ensureAuthenticated, function (req, res) {
-            if (req.user && req.user.userId === 'paul-admin') {
-                var matchId = req.body.matchIdResult;
-                var result = req.body.result;
+        app.post('/admin/result', authModule.isAdmin, function (req, res) {
+            var matchId = req.body.matchIdResult;
+            var result = req.body.result;
 
-                data.updateResult(matchId, result, function (err, done) {
-                    if (err) {
-                        res.status(500).send(err);
-                    } else {
-                        res.status(200).send(done);
-                    }
-                });
-            } else {
-                res.status(401).send('Unauthorized');
-            }
+            data.choices.updateResult(matchId, result).then(done => res.status(200).send(done))
+                .catch(err => res.status(500).send(err));
         });
     }
 
