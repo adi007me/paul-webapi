@@ -24,7 +24,6 @@
                                             next(err);
                                         } else {
                                             leaderBoard.forEach(function (item) {
-                                                console.log(item);
                                                 item.losses = item.wins = 0
                                                 if (wins && wins.some(w => w._id === item.userId)) {
                                                     item.wins = wins.find(w => w._id === item.userId).count;

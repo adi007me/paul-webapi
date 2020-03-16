@@ -12,7 +12,7 @@
                     const lockDate = new Date();
                     lockDate.setHours(lockDate.getHours() + 1);
 
-                    let matches = leagues[0].matches.filter(m => typeof(leagues[0].matches[0].favTeam1) === "undefined" && m.datetime < lockDate);
+                    let matches = leagues[0].matches.filter(m => typeof(m.favTeam1) === "undefined" && m.datetime < lockDate);
                     let promises = [];
 
                     if (matches.length) {
