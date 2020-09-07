@@ -1,14 +1,9 @@
 (async function (database){
     
     var MongoClient = require('mongodb').MongoClient;
-    let vcap_services = JSON.parse(process.env.VCAP_SERVICES || '{}');
-    let mongoUrl = '';
-    if (vcap_services.mlab) {
-        mongoUrl = vcap_services.mlab[0].credentials.uri;        
-    } else {
-        mongoUrl = 'mongodb+srv://paulpredictor:LSUzj56IefzvzHa3@cluster0-oeiby.mongodb.net/test?retryWrites=true&w=majority';
-    }
-
+    
+    let mongoUrl = process.env.MONGO_URL;
+    
     const client = new MongoClient(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
     // let dbName = mongoUrl.substr(mongoUrl.lastIndexOf("/") + 1);
     let dbName = 'paul-predictor';

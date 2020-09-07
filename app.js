@@ -7,6 +7,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+require('dotenv').config();
+
 
 var controllers = require('./controllers');
 var auth = require('./auth');
@@ -22,9 +24,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set("view engine", "vash");
 
-app.use(function setHeaders(req, res, next) {
-    let vcap_services = JSON.parse(process.env.VCAP_SERVICES || '{}');
-    
+app.use(function setHeaders(req, res, next) {    
     //TODO : Update Origin to allow only one host
     if (req.headers.origin) {
         res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
@@ -43,8 +43,6 @@ app.options("*", function (req, res, next) {
     res.status(200).end();
 });
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
