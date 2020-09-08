@@ -25,7 +25,12 @@
 
                             expirationDate.setDate(expirationDate.getDate() + 1);
 
-                            res.cookie('paul-auth', encryptedUser, {expires: expirationDate});
+                            let cookieOptions = { expires: expirationDate }
+                            if (process.env.ENVIRONMENT === 'PROD') {
+                                cookieOptions = { ...cookieOptions, httpOnly: true, secure: true, sameSite: 'NONE' }
+                            }
+
+                            res.cookie('paul-auth', encryptedUser, cookieOptions);
 
                             res.status(200).send(user);
                         }
