@@ -1,8 +1,6 @@
 ((authModule) => {
     
-    const admins = [
-        'adi007me@gmail.com'
-    ];
+    const admins = process.env.ADMINS.split(',')
     
     authModule.authenticate = (token) => {
         return new Promise((resolve, reject) => {
