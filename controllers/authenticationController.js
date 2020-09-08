@@ -48,6 +48,13 @@
 
             res.clearCookie('paul-auth');
 
+            let cookieOptions = { expires: expirationDate }
+            if (process.env.ENVIRONMENT === 'PROD') {
+                cookieOptions = { ...cookieOptions, httpOnly: true, secure: true, sameSite: 'NONE' }
+            }
+
+            res.cookie('paul-auth', '', cookieOptions);
+
             res.status(200).send({'status': 'success'});
         });
     };
