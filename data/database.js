@@ -6,7 +6,7 @@
     
     const client = new MongoClient(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
     // let dbName = mongoUrl.substr(mongoUrl.lastIndexOf("/") + 1);
-    let dbName = 'paul-predictor';
+    let dbName = process.env.DB_NAME || 'paul-predictor';
  
     let theDb = null;
         
