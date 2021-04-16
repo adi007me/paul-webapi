@@ -6,7 +6,7 @@
     var data = require('../data');
 
     leaderBoard.init = function (app) {
-        app.get('/leaderboard', auth.ensureAuthenticated, function (req, res) {
+        app.get('/leaderboard', function (req, res) {
             data.getLeaderBoard(function (err, leaderBoard) {
                 if (err) {
                     res.status(500).send({ status: err });
