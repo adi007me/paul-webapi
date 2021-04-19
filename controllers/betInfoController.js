@@ -4,7 +4,7 @@
     var data = require('../data');
 
     betInfo.init = function (app) {
-        app.get('/matchbets/:matchId', auth.ensureAuthenticated, function (req, res) {
+        app.get('/api/matchbets/:matchId', auth.ensureAuthenticated, function (req, res) {
             let matchId = req.params.matchId;
 
             if (matchId) {

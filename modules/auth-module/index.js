@@ -1,16 +1,17 @@
 ((authModule) => {
     
     const admins = process.env.ADMINS.split(',')
+    const oauthKey = process.env.OAUTH_KEY
     
     authModule.authenticate = (token) => {
         return new Promise((resolve, reject) => {
             const {OAuth2Client} = require('google-auth-library');
-            const client = new OAuth2Client('169706668013-mvf7ct27e5n709k27cdqd2ostnvoe1qm.apps.googleusercontent.com');
+            const client = new OAuth2Client(oauthKey);
 
             async function verify() {
                 const ticket = await client.verifyIdToken({
                     idToken: token,
-                    audience: '169706668013-mvf7ct27e5n709k27cdqd2ostnvoe1qm.apps.googleusercontent.com',
+                    audience: oauthKey,
                 });
                 const payload = ticket.getPayload();
 

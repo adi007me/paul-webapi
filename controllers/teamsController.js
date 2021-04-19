@@ -4,7 +4,7 @@
     var data = require('../data');
 
     teamsController.init = function (app) {
-        app.get('/teams', function (req, res) {
+        app.get('/api/teams', function (req, res) {
             data.getTeams(function (err, teams) {
                 if (err) {
                     console.log(err);
