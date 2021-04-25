@@ -4,7 +4,7 @@
     const userModule = require('../modules/user-module');
     
     authenticationController.init = app => {
-        app.get('/auth/loggedin', (req, res) => {
+        app.get('/api/auth/loggedin', (req, res) => {
             const token = req.query.token;
             
             authModule.authenticate(token).then((user) => {
@@ -41,7 +41,7 @@
             });
         });
 
-        app.get('/auth/logout', (req, res) => {
+        app.get('/api/auth/logout', (req, res) => {
             var expirationDate = new Date();
 
             expirationDate.setDate(expirationDate.getDate() - 2);

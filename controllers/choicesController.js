@@ -5,7 +5,7 @@
     var data = require('../data');
 
     choicesController.init = function (app) {
-        app.get('/choices', authModule.isLoggedIn, function (req, res) {
+        app.get('/api/choices', authModule.isLoggedIn, function (req, res) {
             if (req.user) {
                 data.choices.getChoices(req.user.userId).then(choices => {
                     res.status(200).send(choices);
@@ -17,7 +17,7 @@
             }
         });
 
-        app.post('/choices', authModule.isLoggedIn, function (req, res) {
+        app.post('/api/choices', authModule.isLoggedIn, function (req, res) {
             if (req.user) {
                 if (req.user.userId !== 'paul-admin') {
                     console.log(req.body.choice);

@@ -1,8 +1,9 @@
 (userModule => {
     const db = require('../../data');
+    const allowedDomain = process.env.ALLOWED_DOMAIN
 
     userModule.createOrGetUser = (user, next) => {
-        if (!user.email.endsWith('globant.com')) {
+        if (allowedDomain && !user.email.endsWith(allowedDomain)) {
             next('User not allowed', null)
         } else {
             db.getUser(user.email, (err, dbUser) => {

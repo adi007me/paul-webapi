@@ -4,7 +4,7 @@
     var auth = require('../auth');
 
     leagueController.init = function (app) {
-        app.get('/leagues', function (req, res) {
+        app.get('/api/leagues', function (req, res) {
             db.getLeagues(function (err, leagues) {
                 if (err) {
                     res.status(500).send('Internal Server Error while getting leagues');
