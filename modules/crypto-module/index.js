@@ -1,8 +1,9 @@
 ((cryptoModule) => {    
     const crypto = require('crypto');
+    const key = process.env.CRYPTO_KEY || 'paul-predictor-key'
 
     cryptoModule.encrypt = (data) => {      
-        const cipher = crypto.createCipher('aes-192-cbc', 'paul-predictor-key');
+        const cipher = crypto.createCipher('aes-192-cbc', key);
 
         let cipherUser = cipher.update(data, 'utf8', 'hex');
 
@@ -12,7 +13,7 @@
     };
 
     cryptoModule.decrypt = (encryptedData) => {
-        const deCipher = crypto.createDecipher('aes-192-cbc', 'paul-predictor-key');
+        const deCipher = crypto.createDecipher('aes-192-cbc', key);
         let user = deCipher.update(encryptedData, 'hex', 'utf8');
 
         console.log(user);
