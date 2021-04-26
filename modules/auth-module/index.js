@@ -33,7 +33,11 @@
     };
 
     authModule.setCurrentUser = (req, res, next) => {
-        setCurrentUser(req);
+        try {
+            setCurrentUser(req);
+        } catch (err) {
+            console.log(err)
+        }
 
         next();
     };
