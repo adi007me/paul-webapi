@@ -11,7 +11,10 @@
                         if (err) {
                             next(err, null);
                         } else {
-                            next(null, leagues);
+                            const sortedLeagues = [...leagues]
+                            
+                            sortedLeagues[0].matches = sortedLeagues[0].matches.sort((m1, m2) => { return (m2.datetime < m1.datetime) ? 1 : -1 });
+                            next(null, sortedLeagues);
                         }
                     });
                 }
