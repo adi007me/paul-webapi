@@ -2,6 +2,7 @@
     'use strict';
     var db = require('../data');
     var auth = require('../auth');
+    const authModule = require('../modules/auth-module');
 
     userController.init = function (app) {
         app.get('/user', auth.ensureAuthenticated, function (req, res) {
@@ -10,6 +11,44 @@
 
                 res.status(200).send(userToSend);
             }
+        });
+
+        app.get('/api/user/:id', function (req, res) {
+            db.getLeagues(function (err, leagues) {
+                if (err) {
+                    res.status(500).send('Error getting leagues')
+                } else {
+                    const finishedMatches = (leagues[0].matches || []).filter(m => m.result)
+
+                    const finishedMatchesIds = finishedMatches.map(m => m.match_id)
+                    
+                    const id = req.params.id;
+
+                    db.getUserById(id, function (err, user) {
+                        if (err || !user) {
+                            res.status(500).send('Error getting user by id')
+                        } else {
+                            try {
+                                const requiredMatches = user.choices.filter(c => finishedMatchesIds.includes(c.match_id))
+
+                                const requiredMatchesById = requiredMatches.reduce((acc, choice) => ({...acc, [choice.match_id]: choice}), {})
+
+                                const response = finishedMatches.map(fm => 
+                                    ({
+                                        ...fm,
+                                        choice: requiredMatchesById[fm.match_id].choice,
+                                        points: requiredMatchesById[fm.match_id].points,
+                                    })
+                                )
+                                res.status(200).send(response)
+                            } catch (err) {
+                                console.log(err)
+                                res.status(500).send('Something went wrong')
+                            }
+                        }
+                    })
+                }
+            })
         });
 
         app.post('/user', auth.ensureAuthenticated, function (req, res) {

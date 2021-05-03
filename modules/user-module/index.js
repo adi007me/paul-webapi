@@ -10,7 +10,6 @@
                 if (err) {
                     next(err);
                 } else if (dbUser) {
-                    console.log('dbUser', dbUser);
                     next(null, dbUser);
                 } else {
                     // add user

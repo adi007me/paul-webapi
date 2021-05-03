@@ -1,3 +1,5 @@
+const { ObjectId } = require('bson');
+
 (function (data) {
 
     var database = require('./database');
@@ -39,6 +41,23 @@
                 next(err);
             } else {
                 db.users.findOne({ userId: userName }, next);
+            }
+        });
+    };
+
+    data.getUserById = function (id, next) {
+        database.getDb(function (err, db) {
+            try {
+                const objId = ObjectId(id);
+
+                if (err) {
+                    next(err);
+                } else {
+                    db.users.findOne({ _id: ObjectId(id) }, next);
+                }
+            } catch (err) {
+                console.log(err);
+                next(err);
             }
         });
     };
