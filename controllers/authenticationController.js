@@ -2,9 +2,15 @@
     const authModule = require('../modules/auth-module');
     const cryptoModule = require('../modules/crypto-module');
     const userModule = require('../modules/user-module');
+    const isSuspended = process.env.IS_SUSPENDED === 'true'
     
     authenticationController.init = app => {
         app.get('/api/auth/loggedin', (req, res) => {
+            if (isSuspended) {
+                res.status(500).send('League suspended');
+                return;
+            }
+
             const token = req.query.token;
             
             authModule.authenticate(token).then((user) => {

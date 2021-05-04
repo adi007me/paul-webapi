@@ -2,6 +2,7 @@
     'use strict';
     var db = require('../data');
     var auth = require('../auth');
+    const isSuspended = process.env.IS_SUSPENDED === 'true'
 
     leagueController.init = function (app) {
         app.get('/api/leagues', function (req, res) {
@@ -13,6 +14,9 @@
                     lockDate.setHours(lockDate.getHours() + 1);
 
                     let matches = leagues[0].matches.filter(m => typeof(m.favTeam1) === "undefined" && m.datetime < lockDate);
+
+                    leagues[0].isSuspended = isSuspended;
+
                     let promises = [];
 
                     if (matches.length) {

@@ -2,11 +2,16 @@
     
     const admins = process.env.ADMINS.split(',')
     const oauthKey = process.env.OAUTH_KEY
+    const isSuspended = process.env.IS_SUSPENDED === 'true'
     
     authModule.authenticate = (token) => {
         return new Promise((resolve, reject) => {
             const {OAuth2Client} = require('google-auth-library');
             const client = new OAuth2Client(oauthKey);
+
+            if (isSuspended) {
+                reject('League suspended');
+            }
 
             async function verify() {
                 const ticket = await client.verifyIdToken({
@@ -34,7 +39,7 @@
 
     authModule.setCurrentUser = (req, res, next) => {
         try {
-            setCurrentUser(req);
+            !isSuspended && setCurrentUser(req);
         } catch (err) {
             console.log(err)
         }
@@ -43,7 +48,7 @@
     };
 
     authModule.isLoggedIn = (req, res, next) => {
-        if (req.cookies['paul-auth']) {
+        if (!isSuspended && req.cookies['paul-auth']) {
             next();
         } else {
             res.status(401).send('Not Authenticated');
