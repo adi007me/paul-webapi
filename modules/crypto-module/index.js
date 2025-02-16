@@ -3,7 +3,7 @@
     const key = process.env.CRYPTO_KEY || 'paul-predictor-key'
 
     cryptoModule.encrypt = (data) => {      
-        const cipher = crypto.createCipher('aes-192-cbc', key);
+        const cipher = crypto.createCipheriv('aes-192-cbc', key);
 
         let cipherUser = cipher.update(data, 'utf8', 'hex');
 
