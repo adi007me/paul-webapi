@@ -13,7 +13,7 @@
     };
 
     cryptoModule.decrypt = (encryptedData) => {
-        const deCipher = crypto.createDecipher('aes-192-cbc', key);
+        const deCipher = crypto.createDecipheriv('aes-192-cbc', key);
         let user = deCipher.update(encryptedData, 'hex', 'utf8');
 
         console.log(user);
