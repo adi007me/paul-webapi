@@ -6,7 +6,7 @@
   <base href="/">
 
   <script src="https://accounts.google.com/gsi/client"></script>
-  <meta name="google-signin-client_id" content="404042679583-o3ndihu0l83lje6q68408norqtp6ul6q.apps.googleusercontent.com">
+  <!-- <meta name="google-signin-client_id" content="404042679583-o3ndihu0l83lje6q68408norqtp6ul6q.apps.googleusercontent.com"> -->
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -15,6 +15,13 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 <link rel="stylesheet" href="styles.7f1186066d7f8eb6925a.css"></head>
 <body>
-  <paul-root></paul-root>
-<script src="runtime-es2015.0811dcefd377500b5b1a.js" type="module"></script><script src="runtime-es5.0811dcefd377500b5b1a.js" nomodule defer></script><script src="polyfills-es5.2b7fe5699588ee21e6e0.js" nomodule defer></script><script src="polyfills-es2015.bdccbdba3c6437e875d1.js" type="module"></script><script src="main-es2015.59df02c025380183c89d.js" type="module"></script><script src="main-es5.59df02c025380183c89d.js" nomodule defer></script></body>
+  <script>
+    window.handleCredentialResponse = () => {}
+  </script>
+  <div id="g_id_onload" *ngIf="google"
+    data-client_id="169706668013-mvf7ct27e5n709k27cdqd2ostnvoe1qm.apps.googleusercontent.com"
+    data-callback="handleCredentialResponse">
+</div>
+  <paul-root></paul-root>  
+<script src="runtime-es2015.0811dcefd377500b5b1a.js" type="module"></script><script src="runtime-es5.0811dcefd377500b5b1a.js" nomodule defer></script><script src="polyfills-es5.2b7fe5699588ee21e6e0.js" nomodule defer></script><script src="polyfills-es2015.bdccbdba3c6437e875d1.js" type="module"></script><script src="main-es2015.e7c235b8fd54c82cd6b7.js" type="module"></script><script src="main-es5.e7c235b8fd54c82cd6b7.js" nomodule defer></script></body>
 </html>
